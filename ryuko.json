@@ -5,14 +5,14 @@
     "notification": true,
     "approval": true,
     "premium": false,
-    "BOTNAME": "",
-    "BOTOWNER": "",
-    "PREFIX": "!",
+    "BOTNAME": "miuki",
+    "BOTOWNER": "Sakibin",
+    "PREFIX": "/",
     "OPERATOR": [
-        ""
+        "100065445284007"
     ],
     "ADMINBOT": [
-        ""
+        "100065445284007"
     ],
     "disabledcmds": [],
     "disabledevents": [],
