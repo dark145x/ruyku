@@ -1,13 +1,12 @@
-module.exports.config = {
+module.exports.config = { 
+  premium: false,  prefix: true,
 	name: "weather",
 	version: "1.0.1",
 	permission: 0,
-	credits: "ryuko",
-  prefix: false,
-  premium: false,
-	description: "see weather information in the area",
-	category: "without prefix",
-	usages: "[location]",
+	credits: "SAKIBIN",
+	description: "See weather information in the area",
+	category: "other",
+	usages: "[Location]",
 	cooldowns: 5,
 	dependencies: {
 		"moment-timezone": "",
@@ -21,8 +20,8 @@ module.exports.config = {
 module.exports.languages = {
 
 	"en": {
-		"locationNotExist": "can't find %1.",
-		"returnResult": "temp : %1℃\nfeels like : %2℃\nsky : %3\nhumidity : %4%\nwind speed : %5km/h\nsun rises : %6\nsun sets : %7"
+		"locationNotExist": "Can't find %1.",
+		"returnResult": "🌡 Temp: %1℃\n🌡 Feels like: %2℃\n☁️ Sky: %3\n💦 Humidity: %4%\n💨 Wind speed: %5km/h\n🌅 Sun rises: %6\n🌄 Sun sets: %7"
 	}
 }
 
@@ -31,16 +30,15 @@ module.exports.run = async ({ api, event, args, getText }) => {
 	const moment = global.nodemodule["moment-timezone"];
 	const { throwError } = global.utils;
 	const { threadID, messageID } = event;
-  const { weather } = global.apiryuko;
 	
 	var city = args.join(" ");
 	if (city.length == 0) return throwError(this.config.name, threadID, messageID);
-	return request(encodeURI(weather + city + "&appid=" + global.configModule[this.config.name].OPEN_WEATHER + "&units=metric&lang=" + global.config.language), (err, response, body) => {
+	return request(encodeURI("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + global.configModule[this.config.name].OPEN_WEATHER + "&units=metric&lang=" + global.config.language), (err, response, body) => {
 		if (err) throw err;
 		var weatherData = JSON.parse(body);
 		if (weatherData.cod !== 200) return api.sendMessage(getText("locationNotExist", city), threadID, messageID);
-		var sunrise_date = moment.unix(weatherData.sys.sunrise).tz("Asia/Manila");
-		var sunset_date = moment.unix(weatherData.sys.sunset).tz("Asia/Manila");
+		var sunrise_date = moment.unix(weatherData.sys.sunrise).tz("Asia/Dhaka");
+		var sunset_date = moment.unix(weatherData.sys.sunset).tz("Asia/Dhaka");
 		api.sendMessage({
 			body: getText("returnResult", weatherData.main.temp, weatherData.main.feels_like, weatherData.weather[0].description, weatherData.main.humidity, weatherData.wind.speed, sunrise_date.format('HH:mm:ss'), sunset_date.format('HH:mm:ss')),
 			location: {

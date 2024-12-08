@@ -1,6 +1,7 @@
 hidden = ["package-lock.json", "package.json", "ryuko"]
 language = "bash"
-run = "npm start"
+run = "npm run start"
+modules = ["nodejs-20", "web", "nix"]
 
 [[ports]]
 localPort = 33569
@@ -65,3 +66,9 @@ externalPort = 6800
 [[ports]]
 localPort = 46689
 externalPort = 8008
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+run = ["sh", "-c", "npm run start"]

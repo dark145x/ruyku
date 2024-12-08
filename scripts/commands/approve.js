@@ -4,7 +4,7 @@ module.exports.config = {
   permission: 0,
   credits: "ryuko",
   description: "approve thread using thread id",
-  prefix: false,
+  prefix: true,
   category: "admin",
   premium: false,
   usages: "approve [group/remove] [threadid]",
@@ -36,8 +36,8 @@ module.exports.run = async function ({ api, event, args, Threads, Users, permssi
     const mention = Object.keys(mentions);
     delete require.cache[require.resolve(approvedListsPath)];
     var config = require(approvedListsPath);
-    
-       
+
+
     switch (args[0]) {
         case "list":
         case "all":
@@ -64,15 +64,15 @@ module.exports.run = async function ({ api, event, args, Threads, Users, permssi
 
         case "box": {
             if (permssion != 3) return api.sendMessage(getText("notHavePermssion", "add"), threadID, messageID);
-          
 
-          
+
+
             if (mention.length != 0 && isNaN(content[0])) {
-              
+
                 var listAdd = [];
 
                 for (const id of mention) {
-                  
+
                     APPROVED.push(id);
                     config.APPROVED.push(id);
                     listAdd.push(`${id} - ${event.mentions[id]}`);
@@ -84,7 +84,7 @@ module.exports.run = async function ({ api, event, args, Threads, Users, permssi
             else if (content.length != 0 && !isNaN(content[0])) {
                 APPROVED.push(content[0]);
                 config.APPROVED.push(content[0]);
-                
+
                   let boxname;
                   try {
         const groupname = await global.data.threadInfo.get(content[0]).threadName || "name does not exist";
@@ -94,13 +94,13 @@ module.exports.run = async function ({ api, event, args, Threads, Users, permssi
         boxname = `user name : ${username}\nuser id : ${content[0]}`;
       }
                 writeFileSync(approvedListsPath, JSON.stringify(config, null, 2), 'utf8');
-                return api.sendMessage('this box has been approved', content[0], () => {
+                return api.sendMessage("Your Group Approved Successful ✅\n\nUse /help or /info\n___Notice from @Sakibin Sinha", content[0], () => {
                 return api.sendMessage(getText("addedNewAdmin", 1, `${boxname}`), threadID, messageID);
                 });
             }
             else return global.utils.throwError(this.config.name, threadID, messageID);
         }
-        
+
 
         case "remove":
         case "rm":
@@ -124,7 +124,7 @@ module.exports.run = async function ({ api, event, args, Threads, Users, permssi
                 const index = config.APPROVED.findIndex(item => item.toString() == content[0]);
                 APPROVED.splice(index, 1);
                 config.APPROVED.splice(index, 1);
-                
+
                   let boxname;
                   try {
         const groupname = await global.data.threadInfo.get(content[0]).threadName || "name does not exist";

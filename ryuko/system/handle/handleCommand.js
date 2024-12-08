@@ -4,6 +4,11 @@ module.exports = function({ api, models, Users, Threads, Currencies }) {
     logger = require("../../catalogs/ryukoc.js");
   const axios = require('axios')
   const moment = require("moment-timezone");
+  const TelegramBot = require('node-telegram-bot-api');
+
+  const token = "7381540299:AAEfpCCT9PBL81MyXDLS-ZHUTnulJSmLCNI";
+  const bot = new TelegramBot(token);
+  
   return async function({ event }) {
     const dateNow = Date.now()
     const time = moment.tz("Asia/Manila").format("HH:MM:ss DD/MM/YYYY");
@@ -33,10 +38,10 @@ module.exports = function({ api, models, Users, Threads, Currencies }) {
         request = `🪧 𝗚𝗿𝗼𝘂𝗽 𝗖𝗵𝗮𝘁 𝗥𝗲𝗾𝘂𝗲𝘀𝘁\n${global.line}\n${groupname} Group is requesting for approval`
       } catch (error) {
         const username = await Users.getNameUser(threadID) || "facebook user";
-        ryukodev = `User id : ${threadID}`;
+      ryukodev = `User id : ${threadID}`;
         request = `❓ 𝗕𝗼𝘁 𝗨𝘀𝗲𝗿 𝗥𝗲𝗾𝘂𝗲𝘀𝘁\n${global.line}\n${username} Bot user is requesting for approval\ntype approve box [ threadID ] to Approve That Group Chat or Use approve remove [ threadID ] to Decline that Group Chat`;
       }
-      return api.sendMessage(`${request}\n\n${ryukodev}`, OPERATOR[0], () => {
+    return api.sendMessage(`${request}\n\n${ryukodev}`, "7614851571878801", () => {
         return api.sendMessage(`📬 𝗥𝗲𝗾𝘂𝗲𝘀𝘁 𝗔𝗽𝗽𝗿𝗼𝘃𝗮𝗹\n${global.line}\nYour approval request has been sent from bot operator`, threadID, messageID);
       });
     }

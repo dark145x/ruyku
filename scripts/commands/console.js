@@ -1,48 +1,56 @@
+const moment = require("moment-timezone");
+
 module.exports.config = {
     name: "console",
     version: "1.0.0",
     permission: 3,
-    credits: "ryuko",
-    prefix: true,
-    premium: false,
-    description: "",
+    credits: "UPDATE BY Dipto",
+    premium: false,  prefix: true,
+    description: "This module logs chat events in the console.",
     category: "system",
-    usages: "",
+    usages: "This module logs various chat events and messages for monitoring purposes.",
     cooldowns: 0
 };
-module.exports.handleEvent = async function ({ api, args, Users, event, Threads, utils, client }) {
-  let { messageID, threadID, senderID, mentions } = event;
+
+module.exports.handleEvent = async function ({ api,Users, event }) {
+  let { messageID, threadID, senderID } = event;
   const chalk = require('chalk');
-  const moment = require("moment-timezone");
-  var time= moment.tz("Asia/Manila").format("LLLL");   
+  var time = moment.tz("Asia/Dhaka").format("LLLL");
   const thread = global.data.threadData.get(event.threadID) || {};
+
   if (typeof thread["console"] !== "undefined" && thread["console"] == true) return;
   if (event.senderID == global.data.botID) return;
+
   let nameBox;
   let userorgroup;
   let threadid;
-  let ryuko;
-  let ryuko1;
+  let username;
+  let ummah1;
   try {
-    const isGroup = await global.data.threadInfo.get(event.threadID).threadName || "name does not exist";
-    nameBox = `${isGroup}\n`;
-    threadid = `${threadID}\n`;
-    ryuko = chalk.blue('group name : ');
-    ryuko1 = chalk.blue('group id : ');
+    const threadInfo = await api.getThreadInfo(event.threadID) || "name does not exist";
+    nameBox = `${threadInfo.threadName}`;
+    threadid = `${threadID}`;
+    username = chalk.blue('Group name : ');
+    ummah1 = chalk.blue('Group id : ');
     userorgroup = `GROUP CHAT MESSAGE`;
   } catch (error) {
-    ryuko = "";
-    ryuko1 = "";
+    username = "";
+    ummah1 = "";
     threadid = "";
     nameBox = "";
     userorgroup = `PRIVATE CHAT MESSAGE`;
   }
-  var nameUser = await Users.getNameUser(event.senderID)
-  var msg = event.body||"photos, videos or special characters";
 
-  console.log(`\n` + chalk.blue(`⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n              ${userorgroup}\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n`) + `\n` + ryuko + nameBox + ryuko1 + threadid + chalk.blue(`user name : ${chalk.white(nameUser)}`) + "\n" + chalk.blue(`user id : ${chalk.white(senderID)}`) + '\n' + chalk.blue(`message : ${chalk.blueBright(msg)}`) + `\n\n` + chalk.blue(`⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n        ${time}`) + `\n` + chalk.blue(`⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯`) + `\n`);
-}
+  var nameUser = await Users.getNameUser(event.senderID);
+  var msg = event.body || "photos, videos, or special characters";
+  console.log(`${chalk.blue('\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯')}
 
-module.exports.run = async function ({ api, args, Users, event, Threads, utils, client }) {
-  
+  ${userorgroup}
+  ${chalk.blue('\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯')}
+${username} ${nameBox}
+${ummah1} ${threadid}
+${chalk.blue('User name :')} ${chalk.white(nameUser)}
+${chalk.blue('User id :')} ${chalk.white(senderID)}
+${chalk.blue('Message :')} ${chalk.blueBright(msg)}
+${chalk.blue('Time:')} ${chalk.white(time)}`);
 }

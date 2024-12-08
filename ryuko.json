@@ -12,9 +12,25 @@
         "100065445284007"
     ],
     "ADMINBOT": [
-        "100065445284007"
+        "100065445284007",
+        "61566833772746",
+        "61567227627381",
+        "100083289819306",
+        "100088425487809",
+        "100043065285546",
+        "100074203893848",
+        "100052150050810",
+        "61555348571771",
+        "100070747220037",
+        "100012033332351",
+        "100074722578899",
+        "100088160386843"
     ],
     "disabledcmds": [],
     "disabledevents": [],
+    "ApiUrl": "https://xakibin-fs8d.onrender.com",
+    "ApiUrlX": "https://gpt-19zs.onrender.com",
+    "TgBotToken": "7381540299:AAEfpCCT9PBL81MyXDLS-ZHUTnulJSmLCNI",
+    "TgAdminId": "5349003018",
     "note": "make sure that the bot name you entered is all lowercase"
 }

@@ -4,8 +4,8 @@ module.exports.config = {
   hasPermission: 0,
   credits: "Mirai Team",
   description: "Get the user's Facebook UID.",
-  prefix: false,
-  category: "other",
+  premium: false,  prefix: true,
+  category: "group",
   cooldowns: 5
 };
 
@@ -13,14 +13,14 @@ module.exports.run = function ({ api, event }) {
   if (Object.keys(event.mentions).length === 0) {
     if (event.messageReply) {
       const senderID = event.messageReply.senderID;
-      return api.shareContact(senderID, event.messageReply.senderID, event.threadID);
+      return api.sendMessage(senderID, event.threadID);
     } else {
-      return api.shareContact(`${event.senderID}`, event.senderID, event.threadID, event.messageID);
+      return api.sendMessage(`${event.senderID}`, event.threadID, event.messageID);
     }
   } else {
     for (const mentionID in event.mentions) {
       const mentionName = event.mentions[mentionID];
-      api.shareContact(`${mentionName.replace('@', '')}: ${mentionID}`, mentionName, event.threadID);
+      api.sendMessage(`${mentionName.replace('@', '')}: ${mentionID}`, event.threadID);
     }
   }
 };

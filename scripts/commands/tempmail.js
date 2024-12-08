@@ -1,36 +1,44 @@
+const axios = require("axios");
+
 module.exports.config = {
-  name: "tempmail",
-  version: "1.0.",
-  permission: 0,
-  credits: "James, CREDITS SENSUI FOR THE API ←(*꒪ヮ꒪*)",
-  prefix: true,
-  premium: false,
-  description: "Generate free temporary email",
-  category: "generate",
-  usages: `"gen" = generate email\n"inbox" = check email messages`,
-  cooldowns: 5,
+	name: "tempmail",
+	version: "0.0.1",
+	permission: 0,
+	credits: "imtiaz",
+	description: "( Gen Random Email address )",
+	category: "utility",
+  usages: "( Gen Random Email address ) ",
+	cooldowns: 3
 };
+
 module.exports.run = async ({ api, event, args }) => {
-    const axios = require('axios');
-    let { threadID, messageID } = event;
-    
-   
-    if (!args[0]) {
-        api.sendMessage(`usage: ${global.config.PREFIX}tempmail gen\n\nTo get the messages:\n\nuse ${global.config.PREFIX}tempmail inbox [email]\nexample: ${global.config.PREFIX}tempmail inbox culyqdbm78o3@kzccv.com`, threadID, messageID);
-    }
-    else if (args[0] == "create") {
-        const url1 = await axios.get(`https://tempmail-api.codersensui.repl.co/api/gen`);
-        const email = url1.data.email;
-  return api.sendMessage(`here's your temporary email :\n${email}`, threadID, messageID);
-    }
-    else if (args[0] == "inbox") {
-    const text = args[1];
-      const url2 = await axios.get(`https://tempmail-api.codersensui.repl.co/api/getmessage/${text}`);
-        const mess = url2.data.messages[0].message;
-      const sub = url2.data.messages[0].subject;
-      const sender = url2.data.messages[0].sender;
-      
-           return api.sendMessage(`here's the inbox of ${text}\n\nsender : ${sender}\nsubject : ${sub}\nmessage : ${mess}`, threadID, messageID);
-    }
-    
+
+	if (args[0] === "get") {
+		try {
+			const response = await axios.get("https://gpt-19zs.onrender.com/get");
+			const responseData = response.data.email;
+			api.sendMessage(`✅Here is your email:\n💌${responseData}\n\nHosting from Sakibin.`, event.threadID);
+		} catch (error) {
+			console.error("🔴 𝖤𝗋𝗋𝗈𝗋", error);
+			api.sendMessage("🔴 𝖴𝗇𝖾𝗑𝗉𝖾𝖼𝗍𝖾𝖽 𝖤𝗋𝗋𝗈𝗋, 𝖶𝗁𝗂𝗅𝖾 𝖿𝖾𝗍𝖼𝗁𝗂𝗇𝗀 𝖾𝗆𝖺𝗂𝗅 𝖺𝖽𝖽𝗋𝖾𝗌𝗌...", event.threadID);
+		}
+	} else if (args[0].toLowerCase() === "inbox" && args.length === 2) {
+		const email = args[1];
+		try {
+			const response = await axios.get(`https://gpt-19zs.onrender.com/inbox/${email}`);
+  const data = response.data;
+
+const inboxMessages = data[0].body;
+const inboxFrom = data[0].from;
+const inboxSubject = data[0].subject;
+const inboxDate = data[0].date;
+api.sendMessage(`•=====[Inbox]=====•\n👤From: ${inboxFrom}\n🔖Subject: ${inboxSubject}\n\n💌 Message: ${inboxMessages}\n🗓️Date: ${inboxDate}\n`, event.threadID);
+		} catch (error) {
+			console.error("🔴 𝖤𝗋𝗋𝗈𝗋", error);
+			api.sendMessage("🔴 𝖴𝗇𝖾𝗑𝗉𝖾𝖼𝗍𝖾𝖽 𝖤𝗋𝗋𝗈𝗋, 𝖯𝗅𝖾𝖺𝗌𝖾 𝗍𝗋𝗒 𝖺𝗀𝖺𝗂𝗇 𝗅𝖺𝗍𝖾𝗋...", event.threadID);
+		}
+	} else {
+		api.sendMessage("🔴 Use inbox To check Inbox...", event.threadID);
+	}
 };
+    

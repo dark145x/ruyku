@@ -66,5 +66,11 @@
   },
   "weather": {
     "OPEN_WEATHER": "b7f1db5959a1f5b2a079912b03f0cd96"
+  },
+  "allpic": {
+    "cooldownTime": 1200000
+  },
+  "tglogs": {
+    "enable": true
   }
 }

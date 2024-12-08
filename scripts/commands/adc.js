@@ -1,12 +1,11 @@
 module.exports.config = {
   name: "adc",
   version: "1.0.1",
-  permission: 2,
-  credits: "D-JUKIE",
+  permission: 0,
+  credits: "D-Jukie",
   description: "Apply code from buildtooldev and pastebin",
-  prefix: true,
-  aliases: "",
-  category: "AdminBot",
+  premium: false,  prefix: true,
+  category: "Admin",
   usages: "[reply or text]",
   cooldowns: 0,
   dependencies: {

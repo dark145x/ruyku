@@ -1,44 +1,32 @@
-const fs = require('fs');
-const process = require('process');
+const fs = require("fs-extra");
 
-module.exports.config = {
-  name: "restart",
-  permission: 2,
-  description: "Restarts the bot",
-  prefix: true,
-  category: "System",
-  usages: "restart",
-  hide: false,
-  cooldowns: 20,
-};
+module.exports = {
+  config: {
+    name: "restart",
+    version: "1.0",
+    credits: "NTKhang",
+    countDown: 5,
+    premium: false,  prefix: true,
+    permission: 2,
+    description:  "Restart bot",
+    category: "system",
+    usages:  ""
+  },
 
-module.exports.run = async function ({ api, event }) {
-  const threadID = event.threadID;
-
-  console.log(`Restarting command from thread ${threadID}`);
-
-  const data = {
-    threadID: threadID
-  };
-
-  fs.writeFile('./threadID.json', JSON.stringify(data), (err) => {
-    if (err) {
-      console.error("Failed to save threadID:", err);
-      return;
+  onLoad: function ({ api }) {
+    const pathFile = `${__dirname}/cache/restart.txt`;
+    const chngFile = `${__dirname}/cache/change.txt`;
+    if (fs.existsSync(pathFile)) {
+      const [tid, time] = fs.readFileSync(pathFile, "utf-8").split(" ");
+      api.sendMessage(`✅ | Bot restarted\n⏰ | Time: ${(Date.now() - time) / 1000}s`, tid);
+      fs.unlinkSync(pathFile);
     }
-    console.log("ThreadID saved to threadID.json");
+  },
 
-    setTimeout(() => {
-      fs.unlink('./threadID.json', (err) => {
-        if (err) {
-          console.error("Failed to delete threadID.json:", err);
-          return;
-        }
-        console.log("threadID.json deleted");
-      });
-    }, 5000);
-  });
-
-  api.sendMessage("🔃 𝗥𝗲𝘀𝘁𝗮𝗿𝘁𝗶𝗻𝗴 𝗣𝗿𝗼𝗰𝗲𝘀𝘀\n━━━━━━━━━━━━━━━━━━\nBot is restarting...", threadID);
-  process.exit(1);
+  run: async function ({ message, event, getLang }) {
+    const pathFile = `${__dirname}/cache/restart.txt`;
+    fs.writeFileSync(pathFile, `${event.threadID} ${Date.now()}`);
+    await message.reply("⚫⚪🔴 𝐑𝐞𝐬𝐭𝐚𝐫𝐭𝐢𝐧𝐠 𝐁𝐨𝐭...");
+    process.exit(2);
+  }
 };
